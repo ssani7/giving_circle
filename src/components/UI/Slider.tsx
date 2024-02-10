@@ -1,6 +1,6 @@
 'use client';
 
-import foodImage from '@/assets/food.png';
+import foodImage from '@/assets/Food.png';
 import Image from 'next/image';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick-theme.css';

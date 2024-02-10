@@ -1,5 +1,5 @@
-import CampaignSlider from '@/Components/UI/CampaignSlider';
-import Carousel from '@/Components/UI/Slider';
+import CampaignSlider from '@/components/UI/CampaignSlider';
+import Carousel from '@/components/UI/Slider';
 
 export default function Home() {
 	return (
