@@ -2,32 +2,54 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+.campaignSlider .slick-slide > div {
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+.carouselDots {
+	position: absolute;
+	width: 100%;
+	bottom: 25px;
+	text-align: center;
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+.carouselDots li {
+	position: relative;
+	display: inline-block;
+	width: 20px;
+	height: 20px;
+	margin: 0 5px;
+	padding: 0;
+	cursor: pointer;
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+.carouselDots li button {
+	font-size: 0;
+	line-height: 0;
+	display: block;
+	width: 15px;
+	height: 15px;
+	padding: 5px;
+	cursor: pointer;
+	color: transparent;
+	border: 0;
+	outline: none;
+	background: #444444;
+	border-radius: 10rem;
+}
+
+.carouselDots .slick-active button {
+	width: 15px;
+	height: 15px;
+	background: white;
+	border-radius: 10rem;
+}
+
+.sectionTitle {
+	text-align: center;
+	font-size: 1.75rem;
+	font-weight: 900;
+	margin: 40px 0;
 }
