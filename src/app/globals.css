@@ -36,14 +36,16 @@
 	color: transparent;
 	border: 0;
 	outline: none;
-	background: #444444;
+	background: transparent;
 	border-radius: 10rem;
+	border: 2px solid white;
 }
 
 .carouselDots .slick-active button {
 	width: 15px;
 	height: 15px;
-	background: white;
+	background: #6bcc97;
+	border: 2px solid #6bcc97;
 	border-radius: 10rem;
 }
 
@@ -53,3 +55,7 @@
 	font-weight: 900;
 	margin: 40px 0;
 }
+
+/* .slick-slide {
+	padding: 0 20px;
+} */
