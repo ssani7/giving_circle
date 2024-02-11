@@ -1,6 +1,8 @@
 'use client';
 
-import foodImage from '@/assets/Food.png';
+import banner1 from '@/assets/banner.jpg';
+import banner2 from '@/assets/banner2.jpg';
+import banner3 from '@/assets/banner3.jpg';
 import Image from 'next/image';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick-theme.css';
@@ -19,13 +21,15 @@ const Carousel = () => {
 		dotsClass: 'carouselDots',
 	};
 
+	const banners = [banner1, banner2, banner3];
+
 	return (
 		<div className="w-full">
 			<Slider {...settings}>
-				{[1, 2, 3].map((slide) => (
-					<div key={slide} className="w-full h-[90vh] relative">
+				{banners.map((banner, index) => (
+					<div key={index} className="w-full h-[90vh] relative">
 						<div className="absolute inset-0 w-full h-full bg-black opacity-40"></div>
-						<Image className="w-full object-cover h-full" src={foodImage} width={1000} height={1000} alt="food donation" />
+						<Image className="w-full object-cover h-full" src={banner} width={1000} height={1000} alt="food donation" />
 
 						<div className="absolute text-center w-full lg:text-left left-0 lg:left-16 top-0 bottom-0 h-fit my-auto">
 							<p className="text-white text-5xl font-light">Children need</p>

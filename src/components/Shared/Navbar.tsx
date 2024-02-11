@@ -1,8 +1,9 @@
 'use client';
 
 import MenuIcon from '@mui/icons-material/Menu';
+import UserIcon from '@mui/icons-material/PersonOutlineOutlined';
+import { Button } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
-import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import IconButton from '@mui/material/IconButton';
@@ -11,13 +12,18 @@ import MenuItem from '@mui/material/MenuItem';
 import Toolbar from '@mui/material/Toolbar';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
+import Image from 'next/image';
 import Link from 'next/link';
 import * as React from 'react';
 
 const pages = [{ title: 'Donate', link: '/campaigns' }];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+const settings = [
+	{ title: 'Dashboard', requireAdmin: false, link: '/user/dashboard' },
+	{ title: 'Admin Pannel', requireAdmin: false, link: '/admin/dashboard' },
+	{ title: 'Logout', requireAdmin: false, link: '/logout' },
+];
 
-function Navbar() {
+function Navbar({ session }: { session: boolean }) {
 	const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
 	const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
 
@@ -111,34 +117,42 @@ function Navbar() {
 						))}
 					</Box>
 
-					<Box sx={{ flexGrow: 0 }}>
-						<Tooltip title="Open settings">
-							<IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-								<Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-							</IconButton>
-						</Tooltip>
-						<Menu
-							sx={{ mt: '45px' }}
-							id="menu-appbar"
-							anchorEl={anchorElUser}
-							anchorOrigin={{
-								vertical: 'top',
-								horizontal: 'right',
-							}}
-							keepMounted
-							transformOrigin={{
-								vertical: 'top',
-								horizontal: 'right',
-							}}
-							open={Boolean(anchorElUser)}
-							onClose={handleCloseUserMenu}>
-							{settings.map((setting) => (
-								<MenuItem key={setting} onClick={handleCloseUserMenu}>
-									<Typography textAlign="center">{setting}</Typography>
-								</MenuItem>
-							))}
-						</Menu>
-					</Box>
+					{!session ? (
+						<Button color="info" sx={{ textTransform: 'capitalize', paddingX: '12px', color: 'black' }} startIcon={<UserIcon />}>
+							<Link href={'/login'}>Sign Up</Link>
+						</Button>
+					) : (
+						<Box sx={{ flexGrow: 0 }}>
+							<Tooltip arrow={true} title="Open settings">
+								<IconButton onClick={handleOpenUserMenu} sx={{ p: 0, height: '40px', width: '40px' }}>
+									<Image className="h-full w-full object-cover" src={require('@/assets/user.png')} width={400} height={400} alt="user" />
+								</IconButton>
+							</Tooltip>
+							<Menu
+								sx={{ mt: '45px' }}
+								id="menu-appbar"
+								anchorEl={anchorElUser}
+								anchorOrigin={{
+									vertical: 'top',
+									horizontal: 'right',
+								}}
+								keepMounted
+								transformOrigin={{
+									vertical: 'top',
+									horizontal: 'right',
+								}}
+								open={Boolean(anchorElUser)}
+								onClose={handleCloseUserMenu}>
+								{settings.map((setting) => (
+									<MenuItem key={setting.title} onClick={handleCloseUserMenu}>
+										<Link href={setting.link}>
+											<Typography textAlign="center">{setting.title}</Typography>
+										</Link>
+									</MenuItem>
+								))}
+							</Menu>
+						</Box>
+					)}
 				</Toolbar>
 			</Container>
 		</AppBar>

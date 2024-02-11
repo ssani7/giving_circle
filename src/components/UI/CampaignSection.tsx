@@ -9,12 +9,12 @@ const CampaignSection = async () => {
 		dots: true,
 		infinite: true,
 		speed: 500,
-		slidesToShow: 3,
-		slidesToScroll: 3,
+		slidesToShow: 4,
+		slidesToScroll: 4,
 		arrows: false,
 		responsive: [
 			{
-				breakpoint: 1024,
+				breakpoint: 1670,
 				settings: {
 					slidesToShow: 3,
 					slidesToScroll: 3,
@@ -53,6 +53,7 @@ const CampaignSection = async () => {
 		{ _id: 8, title: 'Education for children', image: education, type: 'Education', date },
 		{ _id: 9, title: 'Health for children', image: health, type: 'Health', date },
 	];
+
 	return (
 		<div className="">
 			<p className="sectionTitle">Donate To Campaigns</p>
