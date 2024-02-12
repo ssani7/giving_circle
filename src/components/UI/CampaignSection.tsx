@@ -53,7 +53,6 @@ const CampaignSection = async () => {
 		{ _id: 8, title: 'Education for children', image: education, type: 'Education', date },
 		{ _id: 9, title: 'Health for children', image: health, type: 'Health', date },
 	];
-
 	return (
 		<div className="">
 			<p className="sectionTitle">Donate To Campaigns</p>

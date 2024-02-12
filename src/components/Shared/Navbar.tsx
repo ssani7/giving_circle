@@ -10,13 +10,16 @@ import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Toolbar from '@mui/material/Toolbar';
-import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
-import Image from 'next/image';
 import Link from 'next/link';
 import * as React from 'react';
 
-const pages = [{ title: 'Donate', link: '/campaigns' }];
+import { usePathname } from 'next/navigation';
+
+const pages = [
+	{ title: 'Home', link: '/' },
+	{ title: 'Donate', link: '/campaigns' },
+];
 const settings = [
 	{ title: 'Dashboard', requireAdmin: false, link: '/user/dashboard' },
 	{ title: 'Admin Pannel', requireAdmin: false, link: '/admin/dashboard' },
@@ -25,22 +28,16 @@ const settings = [
 
 function Navbar({ session }: { session: boolean }) {
 	const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
-	const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
 
 	const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
 		setAnchorElNav(event.currentTarget);
-	};
-	const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
-		setAnchorElUser(event.currentTarget);
 	};
 
 	const handleCloseNavMenu = () => {
 		setAnchorElNav(null);
 	};
 
-	const handleCloseUserMenu = () => {
-		setAnchorElUser(null);
-	};
+	const pathname = usePathname();
 
 	return (
 		<AppBar position="sticky" sx={{ bgcolor: 'white', color: 'black', boxShadow: 'none', borderBottom: '1px solid lightgray' }}>
@@ -107,9 +104,21 @@ function Navbar({ session }: { session: boolean }) {
 					</Typography>
 					<Box sx={{ flexGrow: 1, justifyContent: 'end', paddingRight: '20px', display: { xs: 'none', md: 'flex', color: 'black' } }}>
 						{pages.map((page) => (
-							<Box key={page.title} onClick={handleCloseNavMenu} sx={{ my: 2, paddingX: '16px', paddingY: '8px', display: 'block', textTransform: 'capitalize', background: '#6bcc97' }}>
+							<Box
+								key={page.title}
+								onClick={handleCloseNavMenu}
+								sx={{
+									// color: pathname === page.link ? 'white' : 'black',
+									color: pathname === page.link ? '#388a69' : 'black',
+									borderBottom: pathname === page.link ? '2px solid #388a69' : 'none',
+									my: 2,
+									display: 'block',
+									marginX: '16px',
+									marginY: '8px',
+									textTransform: 'capitalize',
+								}}>
 								<Link href={page.link}>
-									<Typography textAlign="center" color="white" variant="body2" fontWeight={600}>
+									<Typography textAlign="center" variant="body2" fontWeight={600}>
 										{page.title}
 									</Typography>
 								</Link>
@@ -123,34 +132,11 @@ function Navbar({ session }: { session: boolean }) {
 						</Button>
 					) : (
 						<Box sx={{ flexGrow: 0 }}>
-							<Tooltip arrow={true} title="Open settings">
-								<IconButton onClick={handleOpenUserMenu} sx={{ p: 0, height: '40px', width: '40px' }}>
-									<Image className="h-full w-full object-cover" src={require('@/assets/user.png')} width={400} height={400} alt="user" />
-								</IconButton>
-							</Tooltip>
-							<Menu
-								sx={{ mt: '45px' }}
-								id="menu-appbar"
-								anchorEl={anchorElUser}
-								anchorOrigin={{
-									vertical: 'top',
-									horizontal: 'right',
-								}}
-								keepMounted
-								transformOrigin={{
-									vertical: 'top',
-									horizontal: 'right',
-								}}
-								open={Boolean(anchorElUser)}
-								onClose={handleCloseUserMenu}>
-								{settings.map((setting) => (
-									<MenuItem key={setting.title} onClick={handleCloseUserMenu}>
-										<Link href={setting.link}>
-											<Typography textAlign="center">{setting.title}</Typography>
-										</Link>
-									</MenuItem>
-								))}
-							</Menu>
+							<Link href={`/`}>
+								<Typography textAlign="center" color="black" variant="body2" fontWeight={600}>
+									My Donations
+								</Typography>
+							</Link>
 						</Box>
 					)}
 				</Toolbar>
