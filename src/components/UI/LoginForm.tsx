@@ -11,11 +11,12 @@ const LoginForm = () => {
 
 	const handleLogin = async () => {
 		try {
-			await signIn('givingCircle', {
+			const res = await signIn('givingCircle', {
 				email,
 				password,
 				callbackUrl: '/',
 			});
+			console.log('🚀 ~ handleLogin ~ res:', res);
 		} catch (error) {
 			console.log(error);
 		}

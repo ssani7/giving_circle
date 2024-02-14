@@ -10,6 +10,7 @@ export const authOptions = {
 			credentials: {
 				email: { label: 'email', type: 'email', placeholder: 'Your email...' },
 				password: { label: 'Password', type: 'password' },
+				role: { label: 'role', type: 'text' },
 			},
 
 			async authorize(credentials, req): Promise<any> {

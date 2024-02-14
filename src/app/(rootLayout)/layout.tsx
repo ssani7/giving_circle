@@ -21,7 +21,7 @@ export default async function RootLayout({
 	return (
 		<html lang="en">
 			<body className={inter.className}>
-				<Navbar session={session ? true : false} />
+				<Navbar session={session} />
 				{children}
 			</body>
 		</html>

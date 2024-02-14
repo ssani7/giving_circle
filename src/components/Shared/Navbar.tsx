@@ -1,24 +1,24 @@
 'use client';
 
+import { setUser } from '@/redux/features/users/userSlice';
+import { useAppDispatch } from '@/redux/hooks';
 import MenuIcon from '@mui/icons-material/Menu';
 import UserIcon from '@mui/icons-material/PersonOutlineOutlined';
-import { Button } from '@mui/material';
-import AppBar from '@mui/material/AppBar';
+import { Button, IconButton } from '@mui/material';
+import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
-import IconButton from '@mui/material/IconButton';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
+import { styled } from '@mui/material/styles';
 import Link from 'next/link';
-import * as React from 'react';
-
 import { usePathname } from 'next/navigation';
+import UserDrawer from './UserDrawer';
 
 const pages = [
 	{ title: 'Home', link: '/' },
 	{ title: 'Donate', link: '/campaigns' },
+	{ title: 'My Donations', link: '/user/donations' },
 ];
 const settings = [
 	{ title: 'Dashboard', requireAdmin: false, link: '/user/dashboard' },
@@ -26,87 +26,78 @@ const settings = [
 	{ title: 'Logout', requireAdmin: false, link: '/logout' },
 ];
 
-function Navbar({ session }: { session: boolean }) {
-	const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
+const drawerWidth = 240;
 
-	const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
-		setAnchorElNav(event.currentTarget);
-	};
+interface AppBarProps extends MuiAppBarProps {
+	open?: boolean;
+}
 
-	const handleCloseNavMenu = () => {
-		setAnchorElNav(null);
-	};
+const AppBar = styled(MuiAppBar, {
+	shouldForwardProp: (prop) => prop !== 'open',
+})<AppBarProps>(({ theme, open }) => ({
+	zIndex: theme.zIndex.drawer + 1,
+	transition: theme.transitions.create(['width', 'margin'], {
+		easing: theme.transitions.easing.sharp,
+		duration: theme.transitions.duration.leavingScreen,
+	}),
+	...(open && {
+		marginLeft: drawerWidth,
+		width: `calc(100% - ${drawerWidth}px)`,
+		transition: theme.transitions.create(['width', 'margin'], {
+			easing: theme.transitions.easing.sharp,
+			duration: theme.transitions.duration.enteringScreen,
+		}),
+	}),
+}));
 
+function Navbar({ session, open = false, handleDrawerOpen }: { session: any; open?: boolean; handleDrawerOpen?: () => void }) {
 	const pathname = usePathname();
+	const inAdminLayout = pathname.includes('/admin');
+
+	const dispatch = useAppDispatch();
+	dispatch(setUser(session?.user));
+
+	const navOptions = pages.filter((page) => {
+		const requireAuth = page.link.includes('/user');
+
+		if (!requireAuth || (requireAuth && session)) return page;
+	});
 
 	return (
-		<AppBar position="sticky" sx={{ bgcolor: 'white', color: 'black', boxShadow: 'none', borderBottom: '1px solid lightgray' }}>
+		<AppBar open={open} position={inAdminLayout ? 'fixed' : 'sticky'} sx={{ bgcolor: 'white', color: 'black', boxShadow: 'none', borderBottom: '1px solid lightgray' }}>
 			<Container maxWidth="xl">
-				<Toolbar disableGutters>
-					<Typography
-						variant="h6"
-						noWrap
-						component="p"
-						sx={{
-							mr: 2,
-							display: { xs: 'none', md: 'flex' },
-							fontFamily: 'inter',
-							fontWeight: 700,
-						}}>
-						<Link href={'/'}>Giving Circle</Link>
-					</Typography>
-
-					<Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
-						<IconButton size="large" aria-label="account of current user" aria-controls="menu-appbar" aria-haspopup="true" onClick={handleOpenNavMenu} color="inherit">
-							<MenuIcon />
-						</IconButton>
-						<Menu
-							id="menu-appbar"
-							anchorEl={anchorElNav}
-							anchorOrigin={{
-								vertical: 'bottom',
-								horizontal: 'left',
-							}}
-							keepMounted
-							transformOrigin={{
-								vertical: 'top',
-								horizontal: 'left',
-							}}
-							open={Boolean(anchorElNav)}
-							onClose={handleCloseNavMenu}
+				<Toolbar disableGutters sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+					<Box display={'flex'}>
+						{inAdminLayout && (
+							<IconButton
+								color="inherit"
+								aria-label="open drawer"
+								onClick={handleDrawerOpen}
+								edge="start"
+								sx={{
+									marginRight: 5,
+									...(open && { display: 'none' }),
+								}}>
+								<MenuIcon />
+							</IconButton>
+						)}
+						<Typography
+							variant="h6"
+							noWrap
+							component="p"
 							sx={{
-								display: { xs: 'block', md: 'none' },
+								mr: 2,
+								fontFamily: 'inter',
+								fontWeight: 700,
 							}}>
-							{pages.map((page) => (
-								<MenuItem key={page.title} onClick={handleCloseNavMenu}>
-									<Typography textAlign="center" color={'black'}>
-										{page.title}
-									</Typography>
-								</MenuItem>
-							))}
-						</Menu>
+							<Link href={'/'}>Giving Circle</Link>
+						</Typography>
 					</Box>
-					<Typography
-						variant="h5"
-						noWrap
-						component="a"
-						href="#app-bar-with-responsive-menu"
-						sx={{
-							mr: 2,
-							display: { xs: 'flex', md: 'none' },
-							flexGrow: 1,
-							fontWeight: 700,
-							color: 'inherit',
-							textDecoration: 'none',
-						}}>
-						{/* <Link href={'/'}>Giving Circle</Link> */}
-						Giving Circle
-					</Typography>
+
 					<Box sx={{ flexGrow: 1, justifyContent: 'end', paddingRight: '20px', display: { xs: 'none', md: 'flex', color: 'black' } }}>
-						{pages.map((page) => (
+						{navOptions.map((page) => (
 							<Box
 								key={page.title}
-								onClick={handleCloseNavMenu}
 								sx={{
 									// color: pathname === page.link ? 'white' : 'black',
 									color: pathname === page.link ? '#388a69' : 'black',
@@ -127,16 +118,14 @@ function Navbar({ session }: { session: boolean }) {
 					</Box>
 
 					{!session ? (
-						<Button color="info" sx={{ textTransform: 'capitalize', paddingX: '12px', color: 'black' }} startIcon={<UserIcon />}>
-							<Link href={'/login'}>Sign Up</Link>
-						</Button>
+						<Link href={'/auth/login'}>
+							<Button color="info" sx={{ textTransform: 'capitalize', paddingX: '12px', color: 'black' }} startIcon={<UserIcon />}>
+								Sign Up
+							</Button>
+						</Link>
 					) : (
-						<Box sx={{ flexGrow: 0 }}>
-							<Link href={`/`}>
-								<Typography textAlign="center" color="black" variant="body2" fontWeight={600}>
-									My Donations
-								</Typography>
-							</Link>
+						<Box display="flex" alignItems="center">
+							<UserDrawer isAdmin={session?.user?.role === 'admin'} pages={navOptions} />
 						</Box>
 					)}
 				</Toolbar>
