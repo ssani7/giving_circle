@@ -11,11 +11,13 @@ const LoginForm = () => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string>('');
 
   const router = useRouter();
 
   const handleLogin = async () => {
     setLoading(true);
+    setError('');
     try {
       const res = await signIn('givingCircle', {
         email,
@@ -25,6 +27,9 @@ const LoginForm = () => {
       });
       if (res?.ok) {
         router.push(res.url as string);
+      } else {
+        setError('Something went wrong');
+        console.log(res);
       }
     } catch (error) {
       console.log(error);
@@ -63,6 +68,9 @@ const LoginForm = () => {
             className="w-full bg-[#f1f5f9] border-0"
           />
         </div>
+        {error && (
+          <p className="text-xs text-center mt-2 text-red-600 ">{error}</p>
+        )}
 
         <p className="text-sm font-light text-center mt-5">
           Don’t have an account?{' '}

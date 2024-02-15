@@ -35,6 +35,9 @@ const RegisterForm = () => {
 
         if (res?.ok) {
           router.push(res.url as string);
+        } else {
+          setError('Something went wrong');
+          console.log(res);
         }
       } else {
         console.error('Error: ', resp.message);
