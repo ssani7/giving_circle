@@ -55,7 +55,7 @@ const LoginForm = () => {
 
 				<p className="text-sm font-light text-center mt-5">
 					Don’t have an account?{' '}
-					<Link className="hover:underline ml-1" href={'/register'}>
+					<Link className="hover:underline ml-1" href={'/auth/register'}>
 						Sign Up
 					</Link>
 				</p>

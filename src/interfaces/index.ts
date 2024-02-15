@@ -7,3 +7,9 @@ export type Campaign = {
 	image: StaticImageData;
 	date: Date;
 };
+
+export type IUser = {
+	_id: string;
+	email: string;
+	name: string;
+};
