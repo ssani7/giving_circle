@@ -14,7 +14,7 @@ export const authOptions = {
 
 			async authorize(credentials, req): Promise<any> {
 				try {
-					const res = await fetch(`${process.env.BACKEND_URL}/auth/login`, {
+					const res = await fetch(`${process.env.BACKEND_URL}auth/login`, {
 						method: 'POST',
 						body: JSON.stringify(credentials),
 						headers: { 'Content-Type': 'application/json' },
