@@ -20,7 +20,7 @@ export const authOptions = {
 						headers: { 'Content-Type': 'application/json' },
 					});
 					const { data } = await res.json();
-					// console.log(data);
+					console.log(data);
 
 					if (res.ok && data) {
 						return {
