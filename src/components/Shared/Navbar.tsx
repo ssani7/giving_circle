@@ -65,7 +65,7 @@ function Navbar({ session, open = false, handleDrawerOpen }: { session: any; ope
 
 	return (
 		<AppBar open={open} position={inAdminLayout ? 'fixed' : 'sticky'} sx={{ bgcolor: 'white', color: 'black', boxShadow: 'none', borderBottom: '1px solid lightgray' }}>
-			<Container maxWidth="xl">
+			<Container className="max-w-full">
 				<Toolbar disableGutters sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
 					<Box display={'flex'}>
 						{inAdminLayout && (
@@ -94,7 +94,7 @@ function Navbar({ session, open = false, handleDrawerOpen }: { session: any; ope
 						</Typography>
 					</Box>
 
-					<Box sx={{ flexGrow: 1, justifyContent: 'end', paddingRight: '20px', display: { xs: 'none', md: 'flex', color: 'black' } }}>
+					<Box sx={{ flexGrow: 1, justifyContent: 'end', display: { xs: 'none', md: 'flex', color: 'black' } }}>
 						{navOptions.map((page) => (
 							<Box
 								key={page.title}
